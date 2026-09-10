@@ -3,7 +3,13 @@
     "standard": "WCAG2AA",
     "timeout": 30000,
     "wait": 1000,
-    "screenCapture": false
+    "screenCapture": false,
+    "chromeLaunchConfig": {
+      "args": [
+        "--no-sandbox",
+        "--disable-setuid-sandbox"
+      ]
+    }
   },
   "urls": [
     "http://127.0.0.1:4173/index.html"

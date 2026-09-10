@@ -47,7 +47,7 @@ jobs:
       - name: Ejecutar auditoría WCAG 2.2 AA y responsive
         run: |
           for width in 320 398 768 1440; do
-            PA11Y_WIDTH="$width" node -e "require('fs').writeFileSync('pa11y-width.json', JSON.stringify({standard:'WCAG2AA', timeout:30000, wait:1000, viewport:{width:Number(process.env.PA11Y_WIDTH),height:900}}))"
+            PA11Y_WIDTH="$width" node -e "require('fs').writeFileSync('pa11y-width.json', JSON.stringify({standard:'WCAG2AA', timeout:30000, wait:1000, viewport:{width:Number(process.env.PA11Y_WIDTH),height:900}, chromeLaunchConfig:{args:['--no-sandbox','--disable-setuid-sandbox']}}))"
             npx --yes pa11y@8 http://127.0.0.1:4173/index.html \
               --config pa11y-width.json
           done
