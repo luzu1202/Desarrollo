@@ -84,7 +84,7 @@ h1 em, h2 em { font-family: var(--serif); font-weight: 400; letter-spacing: -.08
 .stat-card:not(:first-child) { padding-left: 22px; }
 .stat-card:last-child { border-right: 0; }
 .stat-card strong { color: #fff; font-family: var(--display); font-size: 4.6rem; line-height: .9; }
-.stat-card strong span { color: var(--red); }
+.stat-card strong span { color: #ff8a7d; }
 .stat-card p { margin: 22px 0 7px; font-weight: 700; }
 .stat-card small { color: #83817d; font-size: .67rem; line-height: 1.5; }
 .gallery-section { padding-bottom: 140px; }
