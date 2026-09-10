@@ -1,0 +1,85 @@
+name: Validar y desplegar sitio
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validar HTML, accesibilidad y responsive
+    runs-on: ubuntu-latest
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Validar HTML5
+        run: npx --yes html-validate@9 index.html
+
+      - name: Validar JavaScript
+        run: node --check script.js
+
+      - name: Validar enlaces y recursos externos
+        shell: bash
+        run: |
+          ! grep -RInE 'https?://' --include='*.html' --include='*.css' --include='*.js' . | grep -vE 'https://'
+          if grep -RInE 'http://' --include='*.html' --include='*.css' --include='*.js' .; then
+            echo "Se encontraron recursos HTTP inseguros."
+            exit 1
+          fi
+          node -e "const fs=require('fs'); const html=fs.readFileSync('index.html','utf8'); const ids=[...html.matchAll(/id=\"([^\"]+)\"/g)].map(m=>m[1]); const links=[...html.matchAll(/href=\"#([^\"]+)\"/g)].map(m=>m[1]); const missing=links.filter(id=>!ids.includes(id)); if(missing.length){console.error('Destinos internos inexistentes:', missing); process.exit(1)}; console.log('Enlaces internos OK')"
+
+      - name: Iniciar servidor local
+        run: python3 -m http.server 4173 > /tmp/site-server.log 2>&1 &
+
+      - name: Instalar Chromium para auditoría
+        run: npx --yes playwright@1.55.0 install --with-deps chromium
+
+      - name: Ejecutar auditoría WCAG 2.2 AA y responsive
+        run: |
+          for width in 320 398 768 1440; do
+            PA11Y_WIDTH="$width" node -e "require('fs').writeFileSync('pa11y-width.json', JSON.stringify({standard:'WCAG2AA', timeout:30000, wait:1000, viewport:{width:Number(process.env.PA11Y_WIDTH),height:900}}))"
+            npx --yes pa11y@8 http://127.0.0.1:4173/index.html \
+              --config pa11y-width.json
+          done
+          rm -f pa11y-width.json
+
+      - name: Ejecutar Lighthouse de accesibilidad
+        run: npx --yes @lhci/cli@0.15.1 autorun --config=.lighthouserc.json
+
+  deploy:
+    name: Desplegar en GitHub Pages
+    needs: validate
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+
+      - name: Preparar artefacto
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
