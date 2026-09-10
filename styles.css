@@ -30,7 +30,6 @@ a { color: inherit; }
 .site-nav a { opacity: .78; text-decoration: none; transition: opacity .2s; }
 .site-nav a:hover, .site-nav a:focus, .site-nav a:focus-visible { opacity: 1; }
 .hero { position: relative; min-height: 690px; overflow: hidden; background: #151617; color: #fff; }
-.hero .eyebrow, .hero h1 em, .numbers-section .eyebrow, .numbers-section h2 em, .numbers-section strong span { color: #ff8a7d; }
 .hero:before { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,10,10,.97) 15%, rgba(10,10,10,.65) 55%, rgba(10,10,10,.22)), url("https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2018.jpg") center/cover; content: ""; opacity: .8; }
 .hero-glow { position: absolute; top: 22%; left: 25%; width: 430px; height: 430px; background: var(--red); filter: blur(150px); opacity: .18; }
 .hero-grid { position: relative; z-index: 1; display: grid; grid-template-columns: 1fr 1fr; align-items: center; min-height: 690px; }
@@ -72,7 +71,7 @@ h1 em, h2 em { font-family: var(--serif); font-weight: 400; letter-spacing: -.08
 .timeline-line span { display: block; width: 7%; height: 2px; background: var(--red); transition: width .35s; }
 .timeline-detail { display: grid; grid-template-columns: 145px 1fr 80px; gap: 35px; align-items: center; min-height: 180px; padding: 45px 0 10px; }
 .detail-year, .detail-number { color: var(--red); font-family: var(--display); font-size: 4rem; font-weight: 700; letter-spacing: -.04em; }
-.detail-number { color: var(--muted); font-size: 5rem; text-align: right; }
+.detail-number { color: #c9c5bf; font-size: 5rem; text-align: right; }
 .detail-club { margin: 0 0 8px; color: var(--red); font-size: .68rem; font-weight: 800; letter-spacing: .15em; text-transform: uppercase; }
 .detail-content h3 { margin: 0 0 12px; font-family: var(--display); font-size: 2rem; text-transform: uppercase; }
 .detail-content > p:last-child { max-width: 610px; margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.7; }
@@ -84,7 +83,7 @@ h1 em, h2 em { font-family: var(--serif); font-weight: 400; letter-spacing: -.08
 .stat-card:not(:first-child) { padding-left: 22px; }
 .stat-card:last-child { border-right: 0; }
 .stat-card strong { color: #fff; font-family: var(--display); font-size: 4.6rem; line-height: .9; }
-.stat-card strong span { color: #ff8a7d; }
+.stat-card strong span { color: var(--red); }
 .stat-card p { margin: 22px 0 7px; font-weight: 700; }
 .stat-card small { color: #83817d; font-size: .67rem; line-height: 1.5; }
 .gallery-section { padding-bottom: 140px; }
